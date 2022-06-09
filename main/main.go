@@ -2,14 +2,19 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
 
 	"github.com/AldieNightStar/golisper"
 )
 
 func main() {
-	tags, err := golisper.Parse(
-		"(nums 1 2 3) (nums 4 5 6) (nums 9 10 (a b))",
-	)
+	file, _ := os.Open("file.txt")
+	defer file.Close()
+	fileBytes, _ := ioutil.ReadAll(file)
+	fileContent := string(fileBytes)
+	tags, err := golisper.Parse(fileContent)
+
 	for _, tag := range tags {
 		fmt.Println(tag)
 	}
