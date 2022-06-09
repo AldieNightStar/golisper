@@ -7,8 +7,11 @@ import (
 )
 
 func main() {
-	tags, _ := golisper.Parse(
-		"(1 2 3) (4 5 6) (9 10 (a b))",
+	tags, err := golisper.Parse(
+		"(nums 1 2 3) (nums 4 5 6) (nums 9 10 (a b))",
 	)
-	fmt.Println(tags)
+	for _, tag := range tags {
+		fmt.Println(tag)
+	}
+	fmt.Println(err)
 }

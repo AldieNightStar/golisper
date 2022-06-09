@@ -97,7 +97,7 @@ func lexEtc(s string) (tok string, count int) {
 	sb := strings.Builder{}
 	sb.Grow(32)
 	for _, c := range s {
-		if c == ' ' || c == '\t' || c == '\n' || c == '\r' {
+		if c == ' ' || c == '\t' || c == '\n' || c == '\r' || strings.ContainsRune(symbols, c) {
 			break
 		}
 		sb.WriteRune(c)

@@ -63,6 +63,12 @@ func parseTag(toks []*token) (tag *Tag, count int) {
 		}
 		return nil, 0
 	}
-	// TODO get first etc value as name
-	return NewTag("??", values), pos
+	if len(values) < 1 {
+		return nil, 0
+	}
+	if values[0].Type != TYPE_ETC_STRING {
+		return nil, 0
+	}
+	tagName := values[0].StringVal
+	return NewTag(tagName, values[1:]), pos
 }
