@@ -45,11 +45,11 @@ func NewValTag(t *Tag) *Value {
 
 func (v *Value) String() string {
 	if v.Type == TYPE_STRING {
-		return "'" + v.StringVal + "'"
+		return "STR:'" + v.StringVal + "' "
 	} else if v.Type == TYPE_NUMBER {
-		return fmt.Sprintf("%f", v.NumberVal)
+		return fmt.Sprintf("%f ", v.NumberVal)
 	} else if v.Type == TYPE_ETC_STRING {
-		return fmt.Sprintf("ETC(%s)", v.StringVal)
+		return fmt.Sprintf("ETC(%s) ", v.StringVal)
 	} else if v.Type == TYPE_TAG {
 		return v.TagVal.String()
 	}
