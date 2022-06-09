@@ -14,6 +14,11 @@ func parse(src string) ([]*Tag, error) {
 		if tok.typ != tokenSymbol {
 			return nil, newError(ErrUnknownValue, fmt.Sprintf("Unkown value on %d line. Should be tag here", tok.line))
 		}
+		if tok.typ == tokenComment {
+			// Ignore the comments
+			pos += 1
+			continue
+		}
 		tag, tagCnt := parseTag(toks[pos:])
 		if tagCnt > 0 {
 			tags = append(tags, tag)
@@ -59,6 +64,11 @@ func parseTag(toks []*token) (tag *Tag, count int) {
 		if tagCnt > 0 {
 			values = append(values, NewValTag(tag))
 			pos += tagCnt
+			continue
+		}
+		if tok.typ == tokenComment {
+			// Comments are ignored
+			pos += 1
 			continue
 		}
 		return nil, 0

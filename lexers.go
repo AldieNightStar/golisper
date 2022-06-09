@@ -104,3 +104,17 @@ func lexEtc(s string) (tok string, count int) {
 	}
 	return sb.String(), sb.Len()
 }
+
+func lexComment(s string) (com string, count int) {
+	if s[0] != ';' {
+		return "", 0
+	}
+	pos := 0
+	for _, c := range s {
+		pos += 1
+		if c == '\n' {
+			break
+		}
+	}
+	return strings.Trim(s[1:pos-1], " \t"), pos
+}

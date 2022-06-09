@@ -30,10 +30,10 @@
 // Import
 import "github.com/AldieNightStar/golisper"
 
-// Lets assume there are loadFile func which loads the file as a string
-SourceCode, _ := loadFile("file.txt")
+// Load some file contents as string
+SourceCode, _ := golisper.LoadFile("file.lsp")
 
-// Parse source into atoken list
+// Parse source into a token list
 tokens, err := golisper.Parse(fileContent)
 
 /* 

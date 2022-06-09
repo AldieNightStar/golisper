@@ -17,6 +17,12 @@ func lex(src string) ([]*token, *GoLisperError) {
 			pos += 1
 			continue
 		}
+		com, comCnt := lexComment(src[pos:])
+		if comCnt > 0 {
+			toks = append(toks, newToken(tokenComment, com, 0, line))
+			pos += comCnt
+			continue
+		}
 		sym, symCnt := lexSymbol(src[pos:])
 		if symCnt > 0 {
 			toks = append(toks, newToken(tokenSymbol, sym, 0, line))
@@ -53,6 +59,7 @@ const (
 	tokenNumber
 	tokenSymbol
 	tokenEtc
+	tokenComment
 )
 
 type token struct {

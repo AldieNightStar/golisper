@@ -2,18 +2,13 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
-	"os"
 
 	"github.com/AldieNightStar/golisper"
 )
 
 func main() {
-	file, _ := os.Open("file.txt")
-	defer file.Close()
-	fileBytes, _ := ioutil.ReadAll(file)
-	fileContent := string(fileBytes)
-	tags, err := golisper.Parse(fileContent)
+	fileString, _ := golisper.LoadFile("file.lsp")
+	tags, err := golisper.Parse(fileString)
 
 	for _, tag := range tags {
 		fmt.Println(tag)

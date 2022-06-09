@@ -1,4 +1,5 @@
 (program "Server"
+    ; some sort of comment
     (def init (args 'a' 'b' 'c') (body
         (log "Prepare to init")
         (set self.isReady true)
