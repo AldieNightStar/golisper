@@ -16,31 +16,33 @@ type Value struct {
 	StringVal string
 	NumberVal float64
 	TagVal    *Tag
+	Line      int
 }
 
-func NewVal(t ValueType, StringVal string, NumberVal float64, tag *Tag) *Value {
+func NewVal(t ValueType, StringVal string, NumberVal float64, tag *Tag, line int) *Value {
 	return &Value{
 		Type:      t,
 		StringVal: StringVal,
 		NumberVal: NumberVal,
 		TagVal:    tag,
+		Line:      line,
 	}
 }
 
-func NewValNumber(n float64) *Value {
-	return NewVal(TYPE_NUMBER, "", n, nil)
+func NewValNumber(n float64, line int) *Value {
+	return NewVal(TYPE_NUMBER, "", n, nil, line)
 }
 
-func NewValString(s string) *Value {
-	return NewVal(TYPE_STRING, s, 0, nil)
+func NewValString(s string, line int) *Value {
+	return NewVal(TYPE_STRING, s, 0, nil, line)
 }
 
-func NewValEtc(s string) *Value {
-	return NewVal(TYPE_ETC_STRING, s, 0, nil)
+func NewValEtc(s string, line int) *Value {
+	return NewVal(TYPE_ETC_STRING, s, 0, nil, line)
 }
 
-func NewValTag(t *Tag) *Value {
-	return NewVal(TYPE_TAG, "", 0, t)
+func NewValTag(t *Tag, line int) *Value {
+	return NewVal(TYPE_TAG, "", 0, t, line)
 }
 
 func (v *Value) String() string {

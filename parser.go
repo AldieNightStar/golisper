@@ -30,13 +30,13 @@ func parse(src string) ([]*Tag, error) {
 	return tags, nil
 }
 
-func parseValue(tok *token) (val *Value) {
+func parseValue(tok *token, line int) (val *Value) {
 	if tok.typ == tokenNumber {
-		return NewValNumber(tok.num)
+		return NewValNumber(tok.num, line)
 	} else if tok.typ == tokenString {
-		return NewValString(tok.val)
+		return NewValString(tok.val, line)
 	} else if tok.typ == tokenEtc {
-		return NewValEtc(tok.val)
+		return NewValEtc(tok.val, line)
 	}
 	return nil
 }
@@ -54,7 +54,7 @@ func parseTag(toks []*token) (tag *Tag, count int) {
 			pos += 1
 			break
 		}
-		val := parseValue(tok)
+		val := parseValue(tok, tok.line)
 		if val != nil {
 			values = append(values, val)
 			pos += 1
@@ -62,7 +62,7 @@ func parseTag(toks []*token) (tag *Tag, count int) {
 		}
 		tag, tagCnt := parseTag(toks[pos:])
 		if tagCnt > 0 {
-			values = append(values, NewValTag(tag))
+			values = append(values, NewValTag(tag, tok.line))
 			pos += tagCnt
 			continue
 		}
@@ -80,5 +80,5 @@ func parseTag(toks []*token) (tag *Tag, count int) {
 		return nil, 0
 	}
 	tagName := values[0].StringVal
-	return NewTag(tagName, values[1:]), pos
+	return NewTag(tagName, values[1:], values[0].Line), pos
 }

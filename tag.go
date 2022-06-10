@@ -1,14 +1,18 @@
 package golisper
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 type Tag struct {
 	Name   string
 	Values []*Value
+	Line   int
 }
 
-func NewTag(name string, vals []*Value) *Tag {
-	return &Tag{Name: name, Values: vals}
+func NewTag(name string, vals []*Value, line int) *Tag {
+	return &Tag{Name: name, Values: vals, Line: line}
 }
 
 func (t *Tag) String() string {
@@ -16,7 +20,9 @@ func (t *Tag) String() string {
 	sb.Grow(32)
 	sb.WriteString("TAG[")
 	sb.WriteString(t.Name)
-	sb.WriteString("](")
+	sb.WriteString("] LINE:")
+	sb.WriteString(fmt.Sprintf("%d", t.Line))
+	sb.WriteString(" (")
 	for _, v := range t.Values {
 		sb.WriteString("\n")
 		sb.WriteString(tabulate(v.String()))
