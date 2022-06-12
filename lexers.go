@@ -111,10 +111,10 @@ func lexComment(s string) (com string, count int) {
 	}
 	pos := 0
 	for _, c := range s {
-		pos += 1
 		if c == '\n' {
 			break
 		}
+		pos += 1
 	}
 	return strings.Trim(s[1:pos-1], " \t"), pos
 }
