@@ -23,12 +23,6 @@ func lex(src string) ([]*token, *GoLisperError) {
 			pos += comCnt
 			continue
 		}
-		sym, symCnt := lexSymbol(src[pos:])
-		if symCnt > 0 {
-			toks = append(toks, newToken(tokenSymbol, sym, 0, line))
-			pos += symCnt
-			continue
-		}
 		str, strCnt := lexString(src[pos:])
 		if strCnt > 0 {
 			toks = append(toks, newToken(tokenString, str, 0, line))
@@ -39,6 +33,12 @@ func lex(src string) ([]*token, *GoLisperError) {
 		if numCnt > 0 {
 			toks = append(toks, newToken(tokenNumber, "", num, line))
 			pos += numCnt
+			continue
+		}
+		sym, symCnt := lexSymbol(src[pos:])
+		if symCnt > 0 {
+			toks = append(toks, newToken(tokenSymbol, sym, 0, line))
+			pos += symCnt
 			continue
 		}
 		etc, etcCnt := lexEtc(src[pos:])
