@@ -5,6 +5,7 @@ type GoLisperErrorType int
 const (
 	ErrUnknownToken GoLisperErrorType = iota
 	ErrUnknownValue
+	ErrTagValueErr
 )
 
 type GoLisperError struct {

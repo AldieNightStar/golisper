@@ -19,7 +19,10 @@ func parse(src string) ([]*Tag, error) {
 		if tok.typ != tokenSymbol {
 			return nil, newError(ErrUnknownValue, fmt.Sprintf("Unkown value on %d line. Should be tag here", tok.line))
 		}
-		tag, tagCnt := parseTag(toks[pos:])
+		tag, tagCnt, err := parseTag(toks[pos:])
+		if err != nil {
+			return nil, err
+		}
 		if tagCnt > 0 {
 			tags = append(tags, tag)
 			pos += tagCnt
@@ -41,10 +44,10 @@ func parseValue(tok *token, line int) (val *Value) {
 	return nil
 }
 
-func parseTag(toks []*token) (tag *Tag, count int) {
+func parseTag(toks []*token) (tag *Tag, count int, err error) {
 	first := toks[0]
 	if first.typ != tokenSymbol || first.val != "(" {
-		return nil, 0
+		return nil, 0, nil
 	}
 	values := make([]*Value, 0, 8)
 	pos := 1
@@ -60,7 +63,10 @@ func parseTag(toks []*token) (tag *Tag, count int) {
 			pos += 1
 			continue
 		}
-		tag, tagCnt := parseTag(toks[pos:])
+		tag, tagCnt, err := parseTag(toks[pos:])
+		if err != nil {
+			return nil, 0, err
+		}
 		if tagCnt > 0 {
 			values = append(values, NewValTag(tag, tok.line))
 			pos += tagCnt
@@ -71,14 +77,14 @@ func parseTag(toks []*token) (tag *Tag, count int) {
 			pos += 1
 			continue
 		}
-		return nil, 0
+		return nil, 0, newError(ErrTagValueErr, fmt.Sprintf("Wrong tag at line: %d", tok.line))
 	}
 	if len(values) < 1 {
-		return nil, 0
+		return nil, 0, newError(ErrTagValueErr, fmt.Sprintf("Line %d: Empty tag error. No values", first.line))
 	}
 	if values[0].Type != TYPE_ETC_STRING {
-		return nil, 0
+		return nil, 0, newError(ErrUnknownToken, fmt.Sprintf("Line %d: Tag name is wrong. No values", values[0].Line))
 	}
 	tagName := values[0].StringVal
-	return NewTag(tagName, values[1:], values[0].Line), pos
+	return NewTag(tagName, values[1:], values[0].Line), pos, nil
 }
