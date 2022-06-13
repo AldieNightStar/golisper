@@ -11,13 +11,13 @@ func parse(src string) ([]*Tag, error) {
 	tags := make([]*Tag, 0, 32)
 	for pos < len(toks) {
 		tok := toks[pos]
-		if tok.typ != tokenSymbol {
-			return nil, newError(ErrUnknownValue, fmt.Sprintf("Unkown value on %d line. Should be tag here", tok.line))
-		}
 		if tok.typ == tokenComment {
 			// Ignore the comments
 			pos += 1
 			continue
+		}
+		if tok.typ != tokenSymbol {
+			return nil, newError(ErrUnknownValue, fmt.Sprintf("Unkown value on %d line. Should be tag here", tok.line))
 		}
 		tag, tagCnt := parseTag(toks[pos:])
 		if tagCnt > 0 {

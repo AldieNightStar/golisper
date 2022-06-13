@@ -1,13 +1,24 @@
-(program "Server"
-    ; some sort of comment
-    ; dsadsadsadads
-    (def init (args 'a' 'b' 'c') (body
-        (log "Prepare to init")
-        (set self.isReady true)
-        (self.start)
-        (log "Init done")
+; Function (parse text)
+(set parse (def t (do
+    (set arr (list))
+    (set acc (cell (list)))
+
+    (iterate (str-iterate (concat t " ")) c (do
+        (if (or (eq c " ") (eq c "\t")) (do
+            (list-add arr (str-join (cell-get acc) ""))
+            (cell-set acc (list))
+        ) (do
+            (list-add (cell-get acc) c)
+        ))
     ))
-    (def start abstract)
-    (def stop abstract)
-    (def read-log (returns 'string') abstract)
-)
+
+    (return arr)
+)))
+
+; Call the parser (parse text)
+(print (parse "Hello world and all inside"))
+
+; Iterate over parser's result. Will iterate every word
+(iterate (parse "This is the parsed array") word (do
+    (print word)
+))
