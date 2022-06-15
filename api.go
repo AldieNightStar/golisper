@@ -1,5 +1,5 @@
 package golisper
 
-func Parse(src string) ([]*Tag, error) {
+func Parse(src string) ([]*Value, error) {
 	return parse(src)
 }

@@ -2,13 +2,13 @@ package golisper
 
 import "fmt"
 
-func parse(src string) ([]*Tag, error) {
+func parse(src string) ([]*Value, error) {
 	toks, err := lex(src)
 	if err != nil {
 		return nil, err
 	}
 	pos := 0
-	tags := make([]*Tag, 0, 32)
+	values := make([]*Value, 0, 32)
 	for pos < len(toks) {
 		tok := toks[pos]
 		if tok.typ == tokenComment {
@@ -24,13 +24,13 @@ func parse(src string) ([]*Tag, error) {
 			return nil, err
 		}
 		if tagCnt > 0 {
-			tags = append(tags, tag)
+			values = append(values, NewValTag(tag, tag.Line))
 			pos += tagCnt
 			continue
 		}
 		return nil, newError(ErrUnknownValue, fmt.Sprintf("It's not a tag. Line: %d", tok.line))
 	}
-	return tags, nil
+	return values, nil
 }
 
 func parseValue(tok *token, line int) (val *Value) {
